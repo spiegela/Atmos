@@ -1,0 +1,8 @@
+development:
+  host:
+  port:
+  uid:
+  secret:
+  use_ssl:
+  verify_mode:
+  namespace:
