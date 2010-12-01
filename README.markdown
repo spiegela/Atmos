@@ -34,7 +34,47 @@ Use the atmos.yml config file
 	  secret: ssh_dont_tell
 	  use_ssl: no
 	  namespace: MyRubyApp
+
+Future API Examples High Level API _in my imagination_
+======================================================
+
+Ultimately I want Atmos to work like any other Ruby object usually does.  But first, I'll need to create some lower level bindings to interact with my webservice since EMC's headers-for-params style REST API doesn't map well to existing Ruby libs.
+
+Anyhow, this is how I see the end state (nothing fancy -- just looks like Ruby)
+
+	# Create an Object locally
+	obj = Atmos::Object.new :path => "..." :data => "..."
+	obj.tags[:sometag] => 'somevalue'
 	
+	# Push it to the server
+	obj.save
+	
+	# Create a new version
+	ver = obj.version
+	
+	# Promote version back to object
+	ver.promote
+	# => true
+	
+	# Delete it
+	obj.destroy
+	# => true
+	
+	# Read Tags
+	obj.tags
+	# => {:tagname => 'somevalue', :ctime => '...', :atime => '...'}
+	
+	# Search for objects
+	Atmos::Object.where(:tags.include => 'sometag')
+	# => [ Atmos::Object(1), Atmos::Object(2) ]
+
+	Atmos::Object.where(:path.eql => 'somedir')
+	# => [ Atmos::Object(1), Atmos::Object(2) ]
+	
+Low Level API Examples _in progress_
+====================================
+
+In order to map to EMC's API, I'll be creating several lower-level web-service mapping classes that will perform the actions above.  Here's how I think that'll work:
 
 Atmos Base Object Examples
 --------------------------
